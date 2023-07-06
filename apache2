@@ -1,0 +1,59 @@
+# This is a sample Apache server configuration file
+
+# Set the server's port
+Listen 80
+
+# Set the server's hostname
+ServerName example.com
+
+# Set the server's document root directory
+DocumentRoot /var/www/html
+
+# Enable directory browsing
+<Directory /var/www/html>
+    Options +Indexes
+</Directory>
+
+# Enable server-side includes
+AddType text/html .shtml
+AddOutputFilter INCLUDES .shtml
+
+# Set up a virtual host
+<VirtualHost *:80>
+    ServerName www.example.com
+    DocumentRoot /var/www/html/example
+
+    # Configure logging
+    ErrorLog /var/log/apache2/error.log
+    CustomLog /var/log/apache2/access.log combined
+
+    # Set up additional directives
+    <Directory /var/www/html/example>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+# Enable SSL/TLS
+<IfModule mod_ssl.c>
+    Listen 443
+    SSLCertificateFile /path/to/certificate.crt
+    SSLCertificateKeyFile /path/to/private.key
+    SSLCertificateChainFile /path/to/chain.crt
+
+    <VirtualHost *:443>
+        ServerName secure.example.com
+        DocumentRoot /var/www/html/secure
+
+        # Configure logging
+        ErrorLog /var/log/apache2/secure_error.log
+        CustomLog /var/log/apache2/secure_access.log combined
+
+        # Set up additional directives
+        <Directory /var/www/html/secure>
+            AllowOverride All
+            Require all granted
+        </Directory>
+    </VirtualHost>
+</IfModule>
+
